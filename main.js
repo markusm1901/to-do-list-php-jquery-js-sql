@@ -46,7 +46,7 @@ const copy_to_clipboard  = () =>{
   // Select the text field
   target.select();
   // Copy the text inside the text field
-  navigator.clipboard.writeText("Localhost/project/project_bootstrap/"+target.value);
+  navigator.clipboard.writeText(target.value);
   // Alert the copied text
   alert("Copied the url to your clipboard! : " + target.value);
 }

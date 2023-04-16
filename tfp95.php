@@ -1,30 +1,4 @@
-<?php
-if(isset($_POST["list"]))
-{
-    require_once("Query.class.php");
-    require_once("lib.php");
-    $link = generate_link();
-    $newfile = "$link.php";
-    $link_to_list = "'".$link."'";
-    $add= "'add'";
-    $edit="'edit'";
-    $done="'done'";
-    $undone="'undone'";
-    $id="'id'";
-    $task="'task'";
-    $taskId="'taskId'";
-    $is_done = "'is_done'";
-    $action="'action'";
-    $delete="'delete'";
-    //NOTE : najpierw zrobic script dodajacy/robiace_operacje_na_bazie w testowym pliku, a tutaj do $jquery_data dodac caly kod zrodlowy
-    //NOTE : przekazac jakos link/sciezke/url do nowej listy, by umozliwic wykonanie zapytania 
-    //NOTE : jquery_data -> kod zrodlowy
-    // $code = "<?php $link = '$link'; 
-    // require_once('elements_operations.php');
-    // ";
-
-
-    $src='<?php require("lib.php");?>
+<?php require("lib.php");?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -40,7 +14,7 @@ if(isset($_POST["list"]))
       <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
     <body class="bg-white text-gray-900"><?php
-    $list_name ='.$link_to_list.';
+    $list_name ='tfp95';
     // Connect to the database
     $list_id =get_list_id($list_name);
       // Get the list of tasks from the database
@@ -77,26 +51,26 @@ if(isset($_POST["list"]))
         <div id="add-task-form">
           <br>
           <input type="text" id="add-task-input" style="display: none;" name="task" placeholder="Add a task">
-          <button type="submit" id="add-task-submit" style="display: none;" onClick="submitAddForm('.$add.')">Add Task</button>
+          <button type="submit" id="add-task-submit" style="display: none;" onClick="submitAddForm('add')">Add Task</button>
         </div>
         
         <div id="edit-task-form" style="display: none;">
           <input type="text" id="edit-task-input" name="task" class="bg-white border border-gray-400 focus:outline-none focus:border-gray-900 rounded-lg py-2 px-4 appearance-none leading-normal" placeholder="Enter new task name">
           <input type="hidden" id="edit-task-id" name="edit-taskId" value="">
-        <button type="submit" id="edit-task-submit" class="px-3 py-1 bg-gray-500 text-white rounded-lg" onClick="submitForm(id_edit(),'.$edit.')";>Save</button>
+        <button type="submit" id="edit-task-submit" class="px-3 py-1 bg-gray-500 text-white rounded-lg" onClick="submitForm(id_edit(),'edit')";>Save</button>
         <button type="button" id="cancel-edit-button" class="px-3 py-1 bg-white text-gray-500 rounded-lg" onClick="cancelEdit()">Cancel</button>
       </div>
       
       <ul id="task-list" class="divide-y divide-gray-300"><?php foreach ($tasks as $task):?>
-    <li data-id="<?= $task['.$id.']?>" class="flex justify-between items-center py-2">
+    <li data-id="<?= $task['id']?>" class="flex justify-between items-center py-2">
       <div class="flex items-center">
-        <span class="font-bold text-lg mr-4"><?= $task['.$task.']?></span>
-        <img src="pen.jpg" width="30px" height="30px"alt="Edit" class="cursor-pointer mr-2" onclick="editTask(<?= $task['.$id.'] ?>)">
+        <span class="font-bold text-lg mr-4"><?= $task['task']?></span>
+        <img src="pen.jpg" width="30px" height="30px"alt="Edit" class="cursor-pointer mr-2" onclick="editTask(<?= $task['id'] ?>)">
       </div>
-      <div class="flex items-center"><?php if (!$task['.$is_done.']):?>
-          <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 ml-6 rounded-full font-medium" onclick="submitForm(<?= $task['.$id.']?>,'.$done.' )">Mark as Done</button><?php else:?>
+      <div class="flex items-center"><?php if (!$task['is_done']):?>
+          <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 ml-6 rounded-full font-medium" onclick="submitForm(<?= $task['id']?>,'done' )">Mark as Done</button><?php else:?>
           <span class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 ml-6 rounded-full font-medium">Done!</span><?php endif;?>
-        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 ml-6 rounded-full font-medium" onclick="submitForm(<?= $task['.$id.']?>,'.$delete.' )">Delete</button>
+        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 ml-6 rounded-full font-medium" onclick="submitForm(<?= $task['id']?>,'delete' )">Delete</button>
       </div>
     </li>
   <?php endforeach;?>
@@ -143,30 +117,30 @@ if(isset($_POST["list"]))
       refresh();
     }
     // Check if the form has been submitted
-    if (isset($_POST['.$action.']) || (isset($_POST['.$task.']) && !empty($_POST['.$task.']))) {
+    if (isset($_POST['action']) || (isset($_POST['task']) && !empty($_POST['task']))) {
       // Get the action and task ID (if applicable)
-            $action = $_POST['.$action.'];
-            $taskId = isset($_POST['.$taskId.']) ? (int) $_POST['.$taskId.'] : 0;
+            $action = $_POST['action'];
+            $taskId = isset($_POST['taskId']) ? (int) $_POST['taskId'] : 0;
             $taskId = intval($taskId);
-            $task = $_POST['.$task.'];
+            $task = $_POST['task'];
             // Perform the appropriate action
             switch ($action) {
-          case '.$edit.':
+          case 'edit':
             // Update the task in the database
             update_task_string($task,$taskId);
             refresh();
             break;
-            case '.$delete.':
+            case 'delete':
               // Delete the task from the database
               delete_task($taskId);
               refresh();
               break;
-            case '.$done.':
+            case 'done':
               // Update the task in the database
               update_task_done($taskId);
               refresh();
               break;
-            case '.$undone.':
+            case 'undone':
               // Update the task in the database
               update_task_undone($taskId);
               refresh();
@@ -174,12 +148,4 @@ if(isset($_POST["list"]))
           }
         }
         
-        ';
-    file_put_contents($newfile,$src);
-    // require_once("db_connect.php");
-    // send_list($newfile);
-    $query = "INSERT INTO `listy` VALUES('','$link')";
-    $connect = new Query();
-    $connect->sendInsertQuery($query);
-    header("Location: $newfile");
-}
+        

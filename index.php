@@ -16,7 +16,7 @@
       </div>
       <nav>
       <form method="post" action="script.php">
-        <a href="#" class="text-lg font-medium text-gray-700 hover:text-gray-700 ml-6">Sign in</a>
+        <a href="#" class="text-lg font-medium text-gray-700 hover:text-gray-700 ml-6">Home</a>
         <button type="submit" name="list" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 ml-6 rounded-full font-medium">Create new list</button>
         </form>
       </nav>
