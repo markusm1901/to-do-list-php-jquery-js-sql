@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 14 Mar 2023, 22:11
+-- Czas generowania: 23 Kwi 2023, 23:52
 -- Wersja serwera: 10.4.24-MariaDB
 -- Wersja PHP: 8.0.19
 
@@ -39,22 +39,9 @@ CREATE TABLE `elements` (
 --
 
 INSERT INTO `elements` (`id`, `id_listy`, `task`, `is_done`) VALUES
-(6, 0, 'asdasd', 0),
-(7, 0, 'asdasd', 0),
-(8, 0, 'asd', 0),
-(9, 0, 'asdasdasd', 0),
-(10, 0, 'asdasd', 0),
-(11, 0, 'asdasd', 0),
-(12, 0, 'adsad', 0),
-(13, 4, '12312312', 0),
-(14, 4, 'asdaq', 1),
-(15, 4, 'qqqqq', 1),
-(16, 4, 'qqqqqwqwe', 1),
-(17, 4, 'qwqew', 0),
-(18, 4, 'aaaaaaaaa', 0),
-(19, 5, 'qweqewaaaa', 1),
-(20, 5, 'aaa', 0),
-(22, 6, 'asdasdasd', 0);
+(40, 30, 'qq', 0),
+(41, 31, 'asdfasdf', 0),
+(42, 32, 'll', 0);
 
 -- --------------------------------------------------------
 
@@ -64,19 +51,18 @@ INSERT INTO `elements` (`id`, `id_listy`, `task`, `is_done`) VALUES
 
 CREATE TABLE `listy` (
   `id` int(11) NOT NULL,
-  `link` varchar(255) COLLATE utf8_polish_ci NOT NULL
+  `link` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `is_sent` tinyint(4) NOT NULL,
+  `email` text COLLATE utf8_polish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
 -- Zrzut danych tabeli `listy`
 --
 
-INSERT INTO `listy` (`id`, `link`) VALUES
-(1, '8pwc'),
-(3, 'eehch'),
-(4, 'todolist3'),
-(5, '523v8'),
-(6, 'nhpzo');
+INSERT INTO `listy` (`id`, `link`, `is_sent`, `email`) VALUES
+(43, 'jdid9', 0, ''),
+(44, 'eujc', 1, 'markusm2005@gmail.com');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -102,13 +88,13 @@ ALTER TABLE `listy`
 -- AUTO_INCREMENT dla tabeli `elements`
 --
 ALTER TABLE `elements`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT dla tabeli `listy`
 --
 ALTER TABLE `listy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

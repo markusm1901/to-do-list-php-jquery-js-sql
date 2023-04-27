@@ -16,6 +16,7 @@ if(isset($_POST["list"]))
     $is_done = "'is_done'";
     $action="'action'";
     $delete="'delete'";
+    $email = get_email($link);
     //NOTE : najpierw zrobic script dodajacy/robiace_operacje_na_bazie w testowym pliku, a tutaj do $jquery_data dodac caly kod zrodlowy
     //NOTE : przekazac jakos link/sciezke/url do nowej listy, by umozliwic wykonanie zapytania 
     //NOTE : jquery_data -> kod zrodlowy
@@ -45,6 +46,9 @@ if(isset($_POST["list"]))
     $list_id =get_list_id($list_name);
       // Get the list of tasks from the database
       $tasks = get_tasks_array($list_id);
+      $is_sent = sent_status($list_name);
+      $email = get_email($list_name);
+    $folder_name = basename(__DIR__);
       // Close the database connection
       ?>
       <header class="py-8 fixed top-0 left-0 right-0">
@@ -54,7 +58,7 @@ if(isset($_POST["list"]))
           </div>
           <nav>
           <form method="post" action="script.php">
-            <a href="testlist.php" class="text-lg font-medium text-gray-700 hover:text-gray-700 ml-6">Home</a>
+            <a href="index.php" class="text-lg font-medium text-gray-700 hover:text-gray-700 ml-6">Home</a>
             <button type="submit" name="list" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 ml-6 rounded-full font-medium">Create new list</button>
             </form>
           </nav>
@@ -67,7 +71,7 @@ if(isset($_POST["list"]))
         <button class="mt-8 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-medium" type="submit">Add to the list</button>
         </form>
         <br>
-  <input type="hidden" id="list_copy" value="<?php echo $list_name.".php"?>">
+  <input type="hidden" id="list_copy" value="<?php echo "http://localhost/".$folder_name."/".$list_name.".php"?>">
   <button type="button" onClick="copy_to_clipboard()">Copy the url</button>
     
       <form method="post" id="form">
@@ -106,13 +110,25 @@ if(isset($_POST["list"]))
           <form method="post">
           <button class="mt-8 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-full font-medium" type="submit" name="delete_list">Delete this list</button>
           </form>
-          <form method="post">
-          <p class="text-l font-bold">Once you create a list it&apos;s not assigned to you. In order to remember it, copy the link or enter your e-mail below, so we could send it to you!</p>
-          <input type="email" name="email" class="bg-white border border-gray-400 focus:outline-none focus:border-gray-900 rounded-lg py-2 px-4 appearance-none leading-normal" placeholder="Enter your e-mail address">
-          <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 ml-6 rounded-full font-medium" name="email_btn">Send</button>
-
+          <div class="email">
+          <?php
+          '.'if($is_sent){
+            echo \'<p class="mt-4 text-xl text-gray-700">Your list has already been sent to your email: '.'</p>\';
+            echo $email;
+          }'.'
+          else{
+            echo'."'".'<form method="post">
+            <p class="mt-4 text-xl text-gray-700">To save the list copy the link or enter your e-mail, so we could send it to you!</p>
+            <input type="email" name="email" class="bg-white border border-gray-400 focus:outline-none focus:border-gray-900 rounded-lg py-2 px-4 appearance-none leading-normal" placeholder="Enter your e-mail address">
+            <button type="submit" class="px-3 py-1 bg-gray-500 text-white rounded-lg" name="email_btn">Send</button>
+            </div>
+            </form>'."'".';
+          }
+           ?>
+          </div>
           </form>
           </main>
+          
           <footer class="py-8 bg-gray-200 fixed bottom-0 left-0 right-0">
           <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-700">
             <p class="mb-2">&copy; 2023 To-Do List. All rights reserved.</p>
@@ -178,7 +194,7 @@ if(isset($_POST["list"]))
     file_put_contents($newfile,$src);
     // require_once("db_connect.php");
     // send_list($newfile);
-    $query = "INSERT INTO `listy` VALUES('','$link')";
+    $query = "INSERT INTO `listy` VALUES('','$link','0','')";
     $connect = new Query();
     $connect->sendInsertQuery($query);
     header("Location: $newfile");

@@ -58,6 +58,25 @@ function delete_list(int $task_id){
     $query="DELETE listy,`elements` FROM listy INNER JOIN `elements` WHERE listy.id= elements.id_listy and listy.id = '$task_id';";
     $pdo->query($query);
 }
+function sent_status(string $listname){
+    $pdo = new PDO('mysql:host=localhost;dbname=lists', 'root','');
+    $query="SELECT is_sent FROM listy WHERE listy.link='$listname';";
+    $stmt = $pdo->query($query);
+    $res = $stmt->fetch();
+    return $res[0];
+}
+function get_email(string $list_name){
+    $pdo = new PDO('mysql:host=localhost;dbname=lists', 'root','');
+    $query="SELECT email FROM listy WHERE listy.link='$list_name';";
+    $stmt = $pdo->query($query);
+    $res = $stmt->fetch();
+    return $res[0];
+}
+function update_email_status(string $listname, string $email){
+    $pdo = new PDO('mysql:host=localhost;dbname=lists', 'root','');
+    $query="UPDATE `listy` SET `is_sent` = '1', `email` ='$email' WHERE `listy`.`link` = '$listname';";
+    $pdo->query($query);
+}
 function redirect(){
-    echo'<meta http-equiv="refresh" content="0; url=testlist.php">';
+    echo'<meta http-equiv="refresh" content="0; url=index.php">';
 }

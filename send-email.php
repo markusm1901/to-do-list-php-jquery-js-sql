@@ -20,12 +20,14 @@ function send_email(string $email, string $listname){
     $mail->setFrom('todolistsender123@gmail.com', 'To-do List');
     $mail->addAddress("$email");
     $mail->Subject = 'Your new To-Do List';
-    $mail->Body = "<p>Link to your new To-Do List is:localhost/".$folder_name."/".$listname." </p>";
+    $mail->Body = "<p>Link to your new To-Do List is: http://localhost/".$folder_name."/".$listname.".php </p>";
     $mail->isHTML(true);
     // Send email
     if (!$mail->send()) {
         echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
     } else {
         echo 'Message sent!';
+        update_email_status($listname,$email);
+        refresh();
     }
 }?>

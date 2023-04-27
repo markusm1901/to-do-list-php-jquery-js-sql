@@ -31,3 +31,22 @@ html, body {
       background-position:right;
       z-index: -1;
   }
+
+  .email {
+    position: absolute;
+    bottom: calc(140px); 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    }
+    
+    footer {
+    position: relative;
+    }
+
+    ul {
+  
+      max-height:550px;
+      overflow-y:scroll;
+    }
